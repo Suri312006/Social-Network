@@ -12,5 +12,5 @@ def post_list(request):
     
     serializer = PostSerializer(posts, many=True)
     
-    return JsonResponse({'data': serializer.data})
+    return JsonResponse(serializer.data, safe=False)
     
