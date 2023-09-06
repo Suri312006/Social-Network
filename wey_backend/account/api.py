@@ -28,7 +28,6 @@ def signup(request):
         'password2': data.get('password2'),
     })
     
-    print(form)
 
     if form.is_valid():
         form.save()
@@ -37,6 +36,4 @@ def signup(request):
     else:
         message = 'error'
     
-    print(message)
-
     return JsonResponse({'message': message})
