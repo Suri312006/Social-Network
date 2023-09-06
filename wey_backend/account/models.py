@@ -11,7 +11,7 @@ class CustomUserManager(UserManager):
         if not email:
             raise ValueError("You have not provided an email address")
         
-        email = self.normailize_email(email)
+        email = self.normalize_email(email)
         user = self.model(email=email, name=name, **extra_fields)
         user.set_password(password)
         user.save(using=self.db)

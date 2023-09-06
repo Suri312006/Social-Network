@@ -118,11 +118,29 @@
 <script>
 import PeopleYouMayKnow from '../components/PeopleYouMayKnow.vue'
 import Trends from '../components/Trends.vue'
+import axios from 'axios'
+
 export default {
     name: 'FeedView',
     components: {
         PeopleYouMayKnow,
         Trends,
+    },
+    mounted() {
+        this.getFeed()
+    },
+    methods: {
+        getFeed() {
+            axios
+                .get('/api/posts/')
+                .then(response => {
+                    console.log('data', response.data)
+
+                })
+                .catch(error => {
+                    console,log('error', error)
+                })
+        }
     }
 }
 </script>
