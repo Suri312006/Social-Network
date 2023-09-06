@@ -4,7 +4,7 @@
             <div class="p-4 bg-white border border-gray-200 text-center rounded-lg">
                 <img src="https://i.pravatar.cc/300?img=70" class="mb-6 rounded-full">
 
-                <p><strong>{{ userStore.user.name }}</strong></p>
+                <p><strong>{{ user.name}}</strong></p>
 
                 <div class="mt-6 flex space-x-8 justify-around">
                     <p class="text-xs text-gray-500">182 friends</p>
@@ -104,6 +104,7 @@ export default {
     data(){
         return{
             posts: [],
+            user: {},
             body: '',
 
         }
@@ -120,7 +121,8 @@ export default {
                 .get(`/api/posts/profile/${this.$route.params.id}/`)
                 .then(response => {
                     
-                    this.posts = response.data
+                    this.posts = response.data.posts
+                    this.user = response.data.user
 
                 })
                 .catch(error => {
