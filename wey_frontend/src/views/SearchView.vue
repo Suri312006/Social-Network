@@ -9,14 +9,20 @@
                 </form>
             </div>
 
-            <div class="p-4 bg-white border border-gray-200 rounded-lg grid grid-cols-4 gap-4">
+            <div 
+            v-if="users.length>0"
+            class="p-4 bg-white border border-gray-200 rounded-lg grid grid-cols-4 gap-4">
                 <div 
                 v-for="user in users"
                 v-bind:key="user.id"
                  class="p-4 text-center bg-gray-100 rounded-lg">
                     <img src="https://i.pravatar.cc/300?img=70" class="mb-6 rounded-full">
 
-                    <p><strong>{{ user.name }}</strong></p>
+                    <p>
+                        <strong>
+                            <RouterLink :to="{'name': 'profile', params:{'id': user.id}}">{{ user.name }}</RouterLink>
+                        </strong>
+                    </p>
 
                     <div class="mt-6 flex space-x-8 justify-around">
                         <p class="text-xs text-gray-500">182 friends</p>
@@ -25,19 +31,19 @@
                 </div>
 
             </div>
-
-            <div class="p-4 bg-white border border-gray-200 rounded-lg">
+            <div v-for="post in posts"
+                v-bind:key="post.id" class="p-4 bg-white border border-gray-200 rounded-lg">
                 <div class="mb-6 flex items-center justify-between">
                     <div class="flex items-center space-x-6">
                         <img src="https://i.pravatar.cc/300?img=70" class="w-[40px] rounded-full">
 
-                        <p><strong>Code With Stein</strong></p>
+                        <p><strong>{{ post.created_by.name }}</strong></p>
                     </div>
 
-                    <p class="text-gray-600">18 minutes ago</p>
+                    <p class="text-gray-600"> {{ post.created_at_formatted }}</p>
                 </div>
 
-                <p>Lorem ipsum bla bla lbalkjasldkfj aslkjdf lkasjdfkljaslkfjalksjf</p>
+                <p>{{ post.body }}</p>
 
                 <div class="my-6 flex justify-between">
                     <div class="flex space-x-6">
@@ -65,7 +71,9 @@
                     </div>   
                 </div>  
             </div>
+         
         </div>
+        
 
         <div class="main-right col-span-1 space-y-4">
             <PeopleYouMayKnow />
@@ -90,7 +98,8 @@ export default {
     data(){
         return {
             query: [],
-            users:[]
+            users:[],
+            posts:[]
         }
     },
     methods: {
@@ -104,7 +113,8 @@ export default {
                 .then(response =>{
                     console.log('response:', response.data)
 
-                    this.users = response.data
+                    this.users = response.data.users
+                    this.posts = response.data.posts
                 })
                 .catch(error =>{
                     console.log('error', error)
