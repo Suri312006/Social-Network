@@ -86,6 +86,7 @@ export default {
     mounted() {
         this.getFeed()
     },
+    
 
     watch: {
         '$route.params.id': {
