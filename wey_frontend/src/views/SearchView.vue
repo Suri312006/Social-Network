@@ -134,7 +134,19 @@ export default {
     },
     methods: {
         submitForm() {
-            console.log('submitForm')
+            console.log('submitForm', this.query)
+
+            axios
+                .post('/api/search/', {
+                    query: this.query
+                })
+                .then(response =>{
+                    console.log('response:', response.data)
+                })
+                .catch(error =>{
+                    console.log('error', error)
+                })
+                
         }
     }
 }
