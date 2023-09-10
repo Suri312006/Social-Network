@@ -61,6 +61,7 @@ def friends(request, pk):
     if user == request.user:
         friendship_requests = FriendshipRequest.objects.filter(created_for=request.user)
         
+        
     friends = user.friends.all()
     
     return JsonResponse({

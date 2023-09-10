@@ -90,7 +90,7 @@ export default {
     methods: {
         getFriends() {
             axios
-                .get(`/api/posts/profile/${this.$route.params.id}/friends`)
+                .get(`/api/friends/${this.$route.params.id}/`)
                 .then(response => {
                     this.friendshipRequests = response.data.requests
                     this.friends = response.data.friends
