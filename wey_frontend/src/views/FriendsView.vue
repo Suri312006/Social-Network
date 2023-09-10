@@ -32,7 +32,7 @@
                     </p>
 
                     <div class="mt-6 flex space-x-8 justify-around">
-                        <p class="text-xs text-gray-500">{{ friendshipRequest.created_by.friend_count  }} friends</p>
+                        <p class="text-xs text-gray-500">{{ friendshipRequest.created_by.friends_count  }} friends</p>
                         <p class="text-xs text-gray-500">120 posts</p>
                     </div>
 
@@ -145,6 +145,13 @@ export default {
             axios
                 .post(`/api/friends/${friendship_request_id}/${status}/`)
                 .then(response => {
+
+                    if(response.message == 'request accepted'){
+                        this.toastStore.showToast(5000, 'Friend Request Accepted!', 'bg-emerald-500')
+
+
+                    }
+
                     console.log(response.data)
                 })
                 .catch(error =>{

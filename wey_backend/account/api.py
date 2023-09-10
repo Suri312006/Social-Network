@@ -47,19 +47,31 @@ def send_friend_request(request, pk):
     
     user = User.objects.get(pk=pk)
     
-    friendship_request = FriendshipRequest.objects.create(created_for=user, created_by=request.user)
+    request_user = User.objects.get(pk=request.user.id)
+    
+    check1 = FriendshipRequest.objects.filter(created_for = request.user).filter(created_by=user)
+    
+    check2 = FriendshipRequest.objects.filter(created_for = user).filter(created_by=request.user)
+    
+    if check1.count() == 0 and check2.count() == 0 and request_user != user:
+
+        friendship_request = FriendshipRequest.objects.create(created_for=user, created_by=request.user)
+    
+    else:
+        return JsonResponse({'message': 'already exists'})
     
 
     
-    return JsonResponse({'Friendship Request Created Between' : f"{user.id} and {request.user.id}"})
+    return JsonResponse({'message': 'created'})
 
 
 @api_view(['GET'])
 def friends(request, pk):
     user = User.objects.get(pk=pk)
     friendship_requests = []
+    
     if user == request.user:
-        friendship_requests = FriendshipRequest.objects.filter(created_for=request.user)
+        friendship_requests = FriendshipRequest.objects.filter(created_for=request.user, status=FriendshipRequest.SENT)
         
         
     friends = user.friends.all()
@@ -83,18 +95,25 @@ def handle_request(request, pk, status):
     if(friendship_request.status == 'accepted'):
         #to add friends
         user.friends.add(request.user)
-        user.save()
-        friendship_request.delete()
+        
+        
         
         #changing friend counts
         user.friends_count += 1
         sent_by_user.friends_count += 1
         
+        user.save()
+        sent_by_user.save()
         
+        return JsonResponse({'message': 'request accepted'})
+
+
+    if(friendship_request.status == 'rejected'):
+        return JsonResponse({'message': 'request rejected'})
         
         
         
         
     
-    return JsonResponse({'message': 'friendship request updated'})
+    
     

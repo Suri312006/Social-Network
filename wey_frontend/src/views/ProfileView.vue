@@ -58,15 +58,17 @@ import Trends from '../components/Trends.vue'
 import axios from 'axios'
 import FeedItem from '../components/FeedItem.vue'
 import {useUserStore} from '@/stores/user'
-
+import { useToastStore } from '@/stores/toast'
 
 export default {
     name: 'ProfileView',
     setup() {
         const userStore = useUserStore()
+        const toastStore = useToastStore()
 
         return {
-            userStore
+            userStore,
+            toastStore
         }
     },
 
@@ -143,8 +145,17 @@ export default {
                 .then(response => {
                     console.log('data', response.data)
 
+                    if(response.data.message == 'created'){
+                        this.toastStore.showToast(5000, 'Friend Request Sent!', 'bg-emerald-500')
+                    }
+
+                    if(response.data.message =='already exists'){
+                        this.toastStore.showToast(5000, 'Request Already Exists', 'bg-red-300')
+                    }
+
                 })
                 .catch(error => {
+                    
                     console.log('error', error)
                 })
         }
