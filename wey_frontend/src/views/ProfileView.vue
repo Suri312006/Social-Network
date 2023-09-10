@@ -7,12 +7,17 @@
                 <p><strong>{{ user.name}}</strong></p>
 
                 <div class="mt-6 flex space-x-8 justify-around">
-                    <RouterLink :to='{name:"friends", params: {id:user.id}}' class="text-xs text-gray-500">{{ user.friends_count }} friends</RouterLink>
+                    <RouterLink :to="{name: 'friends', params: {id: user.id}}" class="text-xs text-gray-500">{{ user.friends_count }} friends</RouterLink>
                     <p class="text-xs text-gray-500">120 posts</p>
                 </div>
-                <div class ="mt-6">
+                <div v-if="userStore.user.id !== user.id" class ="mt-6">
                     <button class="inline-block py-2 px-4 bg-purple-600 text-white rounded-lg" @click="sendFriendshipRequest">
                         Add as Friend
+                    </button>
+                </div>
+                <div v-if="userStore.user.id === user.id" class ="mt-6">
+                    <button class="inline-block py-2 px-4 bg-red-600 text-white rounded-lg" @click="logout">
+                        Logout
                     </button>
                 </div>
             </div>
@@ -60,7 +65,7 @@ import FeedItem from '../components/FeedItem.vue'
 import {useUserStore} from '@/stores/user'
 import { useToastStore } from '@/stores/toast'
 
-export default {
+export default (await import ('vue')).defineComponent({
     name: 'ProfileView',
     setup() {
         const userStore = useUserStore()
@@ -82,7 +87,10 @@ export default {
     data(){
         return{
             posts: [],
-            user: {},
+            user: {
+                id: 'okay kys'
+            },
+
             body: '',
 
         }
@@ -102,7 +110,19 @@ export default {
             },
         deep: true,
         immediate: true
+        },
+
+        'user.friends_count':{
+            handler(newValue, oldValue) {
+                if (newValue === oldValue +1){
+                    this.newFriendToast()
+                }
+            },
+        immediate:true
         }
+        
+
+        
         
 
     },
@@ -118,7 +138,7 @@ export default {
 
                 })
                 .catch(error => {
-                    console,log('error', error)
+                    console.log('error', error)
                 })
         },
 
@@ -135,7 +155,7 @@ export default {
                     this.body=''
                 })
                 .catch(error => {
-                    console,log('error', error)
+                    console.log('error', error)
                 })
         },
 
@@ -158,8 +178,22 @@ export default {
                     
                     console.log('error', error)
                 })
+        },
+
+        newFriendToast(){
+
+            this.toastStore.showToast(5000, 'New Friend Added!', 'bg-emerald-500')
+
+        },
+        
+        logout() {
+            console.log('logout')
+            this.userStore.removeToken()
+
+            this.$router.push('/login')
+
         }
 
     }
-}
+})
 </script>

@@ -70,7 +70,7 @@ export default {
 
                 })
                 .catch(error => {
-                    console,log('error', error)
+                    console.log('error', error)
                 })
         },
 
@@ -87,7 +87,7 @@ export default {
                     this.body=''
                 })
                 .catch(error => {
-                    console,log('error', error)
+                    console.log('error', error)
                 })
         }
     }
