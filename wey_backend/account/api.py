@@ -37,3 +37,10 @@ def signup(request):
         message = 'error'
     
     return JsonResponse({'message': message})
+
+@api_view(['POST'])
+def send_friend_request(request, pk):
+    
+    print(f'friendship request sent to {pk}')
+    
+    return JsonResponse({'BLAH BALH BLAH': 'SMD'})

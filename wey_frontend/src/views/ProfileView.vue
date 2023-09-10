@@ -10,6 +10,11 @@
                     <p class="text-xs text-gray-500">182 friends</p>
                     <p class="text-xs text-gray-500">120 posts</p>
                 </div>
+                <div class ="mt-6">
+                    <button class="inline-block py-2 px-4 bg-purple-600 text-white rounded-lg" @click="sendFriendshipRequest">
+                        Add as Friend
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -130,7 +135,19 @@ export default {
                 .catch(error => {
                     console,log('error', error)
                 })
+        },
+
+        sendFriendshipRequest() {
+            axios
+                .post(`/api/friends/request/${this.$route.params.id}/`)
+                .then(response => {
+                    console.log('data', response.data)
+                })
+                .catch(error => {
+                    console.log('error', error)
+                })
         }
+
     }
 }
 </script>
