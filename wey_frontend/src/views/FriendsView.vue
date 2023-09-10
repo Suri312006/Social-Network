@@ -7,7 +7,7 @@
                 <p><strong>{{ user.name}}</strong></p>
 
                 <div class="mt-6 flex space-x-8 justify-around">
-                    <p class="text-xs text-gray-500">182 friends</p>
+                    <p class="text-xs text-gray-500">{{user.friends_count}} friends</p>
                     <p class="text-xs text-gray-500">120 posts</p>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                     </p>
 
                     <div class="mt-6 flex space-x-8 justify-around">
-                        <p class="text-xs text-gray-500">182 friends</p>
+                        <p class="text-xs text-gray-500">{{ friendshipRequest.created_by.friend_count  }} friends</p>
                         <p class="text-xs text-gray-500">120 posts</p>
                     </div>
 
@@ -45,28 +45,29 @@
                         </button>
                     </div>
                 </div>
-
+                <hr>
             </div>
 
-            <hr>
-
+            
             <div 
             v-if="friends.length>0"
-            class="p-4 bg-white border border-gray-200 rounded-lg grid grid-cols-4 gap-4">
+            class="p-4 bg-white border border-gray-200 rounded-lg grid grid-cols-2 gap-4">
+
+            
                 <div 
-                v-for="user in friends"
-                v-bind:key="user.id"
+                v-for="friend in friends"
+                v-bind:key="friend.id"
                  class="p-4 text-center bg-gray-100 rounded-lg">
-                    <img src="https://i.pravatar.cc/300?img=70" class="mb-6 rounded-full">
+                    <img src="https://i.pravatar.cc/100?img=70" class="mb-6 mx-auto rounded-full">
 
                     <p>
                         <strong>
-                            <RouterLink :to="{'name': 'profile', params:{'id': user.id}}">{{ user.name }}</RouterLink>
+                            <RouterLink :to="{'name': 'profile', params:{'id': friend.id}}">{{ friend.name }}</RouterLink>
                         </strong>
                     </p>
 
                     <div class="mt-6 flex space-x-8 justify-around">
-                        <p class="text-xs text-gray-500">182 friends</p>
+                        <p class="text-xs text-gray-500">{{friend.friends_count}} friends</p>
                         <p class="text-xs text-gray-500">120 posts</p>
                     </div>
                 </div>
