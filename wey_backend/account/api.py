@@ -6,7 +6,7 @@ from .forms import SignupForm
 
 from .models import FriendshipRequest, User
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, FriendshipRequestSerializer
 
 
 @api_view(['GET'])
@@ -52,3 +52,21 @@ def send_friend_request(request, pk):
 
     
     return JsonResponse({'Friendship Request Created Between' : f"{user.id} and {request.user.id}"})
+
+
+@api_view(['GET'])
+def friends(request, pk):
+    user = User.objects.get(pk=pk)
+    friendship_requests = []
+    if user == request.user:
+        friendship_requests = FriendshipRequest.objects.filter(created_for=request.user)
+        
+    friends = user.friends.all()
+    
+    return JsonResponse({
+        'user': UserSerializer(user).data,
+        'friends':UserSerializer(friends, many=True).data,
+        'requests': FriendshipRequestSerializer(friendship_requests, many=True).data,
+    }, safe=False)
+        
+    
