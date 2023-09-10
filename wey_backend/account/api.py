@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 
 from .forms import SignupForm
 
+from .models import FriendshipRequest, User
+
 
 @api_view(['GET'])
 def me(request):
@@ -41,6 +43,10 @@ def signup(request):
 @api_view(['POST'])
 def send_friend_request(request, pk):
     
-    print(f'friendship request sent to {pk}')
+    user = User.objects.get(pk=pk)
     
-    return JsonResponse({'BLAH BALH BLAH': 'SMD'})
+    friendship_request = FriendshipRequest(created_for=user, created_by=request.user)
+    
+
+    
+    return JsonResponse({'Friendship Request Created Between' : f"{user.id} and {request.user.id}"})

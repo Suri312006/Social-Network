@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
     
         
-class FriendshpiRequest(models.Model):
+class FriendshipRequest(models.Model):
     
     SENT = 'sent'
     ACCEPTED = 'accepted'
