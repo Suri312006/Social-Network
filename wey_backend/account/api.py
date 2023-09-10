@@ -6,6 +6,8 @@ from .forms import SignupForm
 
 from .models import FriendshipRequest, User
 
+from .serializers import UserSerializer
+
 
 @api_view(['GET'])
 def me(request):

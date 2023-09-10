@@ -142,6 +142,7 @@ export default {
                 .post(`/api/friends/request/${this.$route.params.id}/`)
                 .then(response => {
                     console.log('data', response.data)
+
                 })
                 .catch(error => {
                     console.log('error', error)
