@@ -3,7 +3,7 @@ from django.http import JsonResponse
 # Create your views here.
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from .forms import PostForm
-from .models import Post, Like
+from .models import Post, Like, Comment
 from .serializers import PostSerializer, PostDetailSerializer
 from account.serializers import UserSerializer
 from account.models import User
@@ -81,3 +81,18 @@ def post_detail(request, id):
         'post': PostDetailSerializer(post).data    
         
     })
+    
+@api_view(['POST'])
+def post_create_comment(request, id):
+    #! PLEASE REMEMBER TO USE .OBJECTS.CREATE() WHEN MAKING A NEW THING FOR THE LOVE OF GOD
+    comment = Comment.objects.create(created_by=request.user, body= request.data.get('body'))
+    post = Post.objects.get(pk=id)
+    
+    
+    post.comments_count += 1
+    post.comments.add(comment)
+    
+    post.save()
+    print(request.data)
+    return JsonResponse({'message': 'comment added'})
+    
