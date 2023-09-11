@@ -3,7 +3,7 @@ from django.http import JsonResponse
 # Create your views here.
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from .forms import PostForm
-from .models import Post
+from .models import Post, Like
 from .serializers import PostSerializer
 from account.serializers import UserSerializer
 from account.models import User
@@ -55,3 +55,25 @@ def post_create(request):
     else:
     
         return JsonResponse({'error': 'fuck you'})
+    
+
+@api_view(['POST'])
+def post_like(request, id):     
+    # like = Like.objects.create(created_by=request.user)
+    post = Post.objects.get(pk=id)
+    like = Like.objects.create(created_by=request.user)
+
+    
+    if len(post.likes.filter(created_by=request.user)) == 0:
+        post.likes.add(like)
+        post.likes_count +=1
+        post.save()
+        return JsonResponse({'like_status': 'created'})
+    else:
+        return JsonResponse({'like_status': 'exists'})
+    
+   
+    
+
+
+    
