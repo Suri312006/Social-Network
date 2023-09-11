@@ -24,7 +24,14 @@
                 <FeedItem v-bind:post='post' />
             </div>
 
-            <div class="bg-white border border-gray-200 rounded-lg">
+            <div class=" p-4 ml-6  bg-white border border-gray-200 rounded-lg"
+                v-for="comment in post.comments"
+                v-bind:key="comment.id">
+                
+                <CommentItem v-bind:comment="comment"/>
+            </div>
+
+            <div class="ml-6 bg-white border border-gray-200 rounded-lg">
                 <form v-on:submit.prevent="submitForm" method="post">
                     <div class="p-4">  
                         <textarea v-model="body" class="p-4 w-full bg-gray-100 rounded-lg" placeholder="What do you think?"></textarea>
@@ -51,20 +58,25 @@
 import PeopleYouMayKnow from '../components/PeopleYouMayKnow.vue'
 import Trends from '../components/Trends.vue'
 import FeedItem from '../components/FeedItem.vue'
+import CommentItem from '../components/CommentItem.vue'
 import axios from 'axios'
+
 
 export default {
     name: 'PostView',
     components: {
-        PeopleYouMayKnow,
-        Trends,
-        FeedItem,
-    },
+    PeopleYouMayKnow,
+    Trends,
+    FeedItem,
+    CommentItem,
+    CommentItem
+},
 
     data(){
         return{
             post: {
                 id: null,
+                comments: []
                 
             },
             body: '',
@@ -99,8 +111,10 @@ export default {
                 })
                 .then(response => {
                     console.log('data', response.data)
-                    //this.posts.unshift(response.data)
+                    this.post.comments.push(response.data.comment)
+                    this.post.comments_count +=1
                     this.body=''
+                
                 })
                 .catch(error => {
                     console.log('error', error)
