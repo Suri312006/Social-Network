@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from .forms import PostForm
 from .models import Post, Like
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostDetailSerializer
 from account.serializers import UserSerializer
 from account.models import User
 
@@ -73,7 +73,11 @@ def post_like(request, id):
         return JsonResponse({'like_status': 'exists'})
     
    
+@api_view(['GET'])
+def post_detail(request, id):
+    post = Post.objects.get(pk=id)
     
-
-
-    
+    return JsonResponse({
+        'post': PostDetailSerializer(post).data    
+        
+    })
