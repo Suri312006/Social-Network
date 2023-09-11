@@ -76,3 +76,7 @@ class FriendshipRequest(models.Model):
     created_by = models.ForeignKey(User, related_name="created_friendshiprequest", on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices = STATUS_CHOICES, default=SENT )
     
+    class Meta:
+        # Add any model-specific options here
+        db_table = 'account_friendshiprequest'
+    
