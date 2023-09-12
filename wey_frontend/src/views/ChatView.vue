@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default{
     name: 'chat',
 
@@ -12,7 +13,14 @@ export default{
 
     methods: {
         getConversations(){
-            console.log('getConversations')
+            axios
+            .get('/api/chat/')
+            .then(response => {
+                console.log(response.data)
+            })
+            .catch(error =>{
+                console.log(error)
+            })
         }
     }
 }

@@ -7,7 +7,7 @@ from .models import Conversation, ConversationMessage
 
 @api_view(['GET'])
 def conversation_list(request):
-    conversations = Conversation.objects.filter(users__in=list(request.user))
+    conversations = Conversation.objects.filter(users__in=list([request.user]))
     print(conversations)
 
 
