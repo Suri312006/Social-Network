@@ -20,7 +20,7 @@ class ConversationMessage(models.Model):
     id = models.UUIDField(primary_key = True, default=uuid.uuid4, editable=False)
     conversation = models.ForeignKey(Conversation, related_name='messages', on_delete=models.CASCADE)
     
-    body = models.TextField
+    body = models.TextField(blank=True, null=True)
     sent_to = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     
