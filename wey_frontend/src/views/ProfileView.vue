@@ -10,11 +10,18 @@
                     <RouterLink :to="{name: 'friends', params: {id: user.id}}" class="text-xs text-gray-500">{{ user.friends_count }} friends</RouterLink>
                     <p class="text-xs text-gray-500">120 posts</p>
                 </div>
-                <div v-if="userStore.user.id !== user.id" class ="mt-6">
-                    <button class="inline-block py-2 px-4 bg-purple-600 text-white rounded-lg" @click="sendFriendshipRequest">
+
+                <div class ="mt-6">
+                    <button  v-if="userStore.user.id !== user.id" class="inline-block py-2 px-4 bg-purple-600 text-white rounded-lg" @click="sendFriendshipRequest">
                         Add as Friend
                     </button>
+
+                    <button  v-if="userStore.user.id !== user.id" class="inline-block mt-3 py-2 px-4 bg-purple-600 text-white rounded-lg" @click="sendDirectMessage">
+                        Start Conversation
+                    </button>
+
                 </div>
+                
                 <div v-if="userStore.user.id === user.id" class ="mt-6">
                     <button class="inline-block py-2 px-4 bg-red-600 text-white rounded-lg" @click="logout">
                         Logout
@@ -128,6 +135,20 @@ export default (await import ('vue')).defineComponent({
     },
 
     methods: {
+        sendDirectMessage(){
+            console.log('send direct message')
+            axios
+                .get(`/api/chat/${this.$route.params.id}/get-or-create/`)
+                .then(response =>{
+                    console.log(response.data)
+
+                    this.$router.push('/chat')
+                })
+                .catch(error =>{
+                    console.log('error', error)
+                })
+        },
+
         getFeed() {
             axios
                 .get(`/api/posts/profile/${this.$route.params.id}/`)

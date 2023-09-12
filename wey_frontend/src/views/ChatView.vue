@@ -3,27 +3,27 @@
         <div class="main-left col-span-1">
             <div class="p-4 bg-white border border-gray-200 rounded-lg">
                 <div class="space-y-4">
-                    <div class="flex items-center justify-between"
+                    <div 
+                        class="flex items-center justify-between"
                         v-for="conversation in conversations"
                         v-bind:key="conversation.id"
                         v-on:click="setActiveConversation(conversation.id)"
-                        >
-
+                    >
                         <div class="flex items-center space-x-2">
                             <img src="https://i.pravatar.cc/300?img=70" class="w-[40px] rounded-full">
-
-                            <template 
-                             v-for="user in conversation.users"
-                                v-bind:key="user.id">
                             
-                                    <p class="text-xs font-bold"
-                                    v-if="user.id !== userStore.user.id">
-                                        {{ user.name }}
-                                    </p>
+                            <template
+                                v-for="user in conversation.users"
+                                v-bind:key="user.id"
+                            >
+                                <p 
+                                    class="text-xs font-bold"
+                                    v-if="user.id !== userStore.user.id"
+                                >{{ user.name }}</p>
                             </template>
                         </div>
 
-                        <span class="text-xs text-gray-500">{{conversation.modified_at_formatted}}</span>
+                        <span class="text-xs text-gray-500">{{ conversation.modified_at_formatted }} ago</span>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
         <div class="main-center col-span-3 space-y-4">
             <div class="bg-white border border-gray-200 rounded-lg">
                 <div class="flex flex-col flex-grow p-4">
-                <template
+                    <template
                         v-for="message in activeConversation.messages"
                         v-bind:key="message.id"
                     >
@@ -67,7 +67,6 @@
                         </div>
                     </template>
                 </div>
-                
             </div>
 
             <div class="bg-white border border-gray-200 rounded-lg">
@@ -75,99 +74,101 @@
                     <div class="p-4">  
                         <textarea v-model="body" class="p-4 w-full bg-gray-100 rounded-lg" placeholder="What do you want to say?"></textarea>
                     </div>
-                
-                <div class="p-4 border-t border-gray-100 flex justify-between">
-                    <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">Send</button>
-                </div>
-            </form>
+
+                    <div class="p-4 border-t border-gray-100 flex justify-between">
+                        <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">Send</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </template>
+
 <script>
 import axios from 'axios'
-import {useUserStore} from '@/stores/user'
-export default{
-    name: 'chat',
-    setup() {
-            const userStore = useUserStore()
+import { useUserStore } from '@/stores/user'
 
-            return {
-                userStore
-            }
-        },
+export default {
+    name: 'chat',
+
+    setup() {
+        const userStore = useUserStore()
+
+        return {
+            userStore
+        }
+    },
 
     data() {
-        return{
+        return {
             conversations: [],
             activeConversation: {},
             body: ''
         }
     },
 
-    mounted(){
+    mounted() {
         this.getConversations()
     },
-
+    
     methods: {
-        getConversations(){
-            axios
-            .get('/api/chat/')
-            .then(response => {
-                console.log(response.data)
-                this.conversations = response.data
+        setActiveConversation(id) {
+            console.log('setActiveConversation', id)
 
-                if (this.conversations.length){
-
-                    this.activeConversation = this.conversations[0].id
-
-                }
-
-                console.log('this.activeConversation', this.activeConversation)
-
-                this.getMessages()
-            })
-            .catch(error =>{
-                console.log(error)
-            })
+            this.activeConversation = id
+            this.getMessages()
         },
+        getConversations() {
+            console.log('getConversations')
+
+            axios
+                .get('/api/chat/')
+                .then(response => {
+                    console.log(response.data)
+
+                    this.conversations = response.data
+
+                    if (this.conversations.length) {
+                        this.activeConversation = this.conversations[0].id
+                    }
+
+                    this.getMessages()
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
+
         getMessages() {
-            axios
-            .get(`/api/chat/${this.activeConversation}`)
-            .then(response => {
-                console.log(response.data)
-                this.activeConversation = response.data
-                
-            })
-            .catch(error =>{
-                console.log(error)
-            })
+            console.log('getMessages')
 
- 
-            
+            axios
+                .get(`/api/chat/${this.activeConversation}/`)
+                .then(response => {
+                    console.log(response.data)
+
+                    this.activeConversation = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         },
+
         submitForm() {
             console.log('submitForm', this.body)
 
             axios
-                .post(`/api/chat/${this.activeConversation.id}/send/`,{
-                    'body': this.body
+                .post(`/api/chat/${this.activeConversation.id}/send/`, {
+                    body: this.body
                 })
                 .then(response => {
-                    console.log('data', response.data)
-                    this.body=''
+                    console.log(response.data)
 
                     this.activeConversation.messages.push(response.data)
                 })
                 .catch(error => {
-                    console.log('error', error)
+                    console.log(error)
                 })
-        },
-        setActiveConversation(id){
-            console.log('set active conversation', id)
-
-            this.activeConversation = id
-            this.getMessages()
         }
     }
 }
