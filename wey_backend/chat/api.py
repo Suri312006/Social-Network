@@ -10,5 +10,7 @@ def conversation_list(request):
     conversations = Conversation.objects.filter(users__in=list([request.user]))
     print(conversations)
 
+    serializer= ConversationSerializer(conversations, many=True)
 
-    return JsonResponse({'lol': 'lololol'})
+    print(serializer.data)
+    return JsonResponse(serializer.data ,safe=False)

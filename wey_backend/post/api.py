@@ -51,6 +51,7 @@ def post_create(request):
         
         serializer = PostSerializer(post)
         
+
         return JsonResponse(serializer.data, safe=False)
     else:
     

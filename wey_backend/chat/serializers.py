@@ -4,10 +4,11 @@ from account.serializers import UserSerializer
 from .models import Conversation, ConversationMessage
 
 class ConversationSerializer(ModelSerializer):
+    users = UserSerializer(read_only=True, many=True)
     class Meta:
-        users = UserSerializer(read_only=True, many=True)
         
         model = Conversation
+        
         fields = ('id', 'users', 'modified_at_formatted')
         
 class ConversationMessageSerializer(ModelSerializer):
