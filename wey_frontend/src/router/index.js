@@ -12,7 +12,7 @@ import test from '../views/test.vue'
 import PostView from '../views/PostView.vue'
 import ChatView from '../views/ChatView.vue'
 import TrendView from '../views/TrendView.vue'
-
+import EditProfileView from '../views/EditProfileView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -81,6 +81,10 @@ const router = createRouter({
       name: 'trends',
       component: TrendView
 
+    },{
+      path:'/edit-profile',
+      name: 'edit-profile',
+      component: EditProfileView
     }
   ]
 })

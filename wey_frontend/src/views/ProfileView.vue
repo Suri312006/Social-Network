@@ -26,7 +26,12 @@
                     <button class="inline-block py-2 px-4 bg-red-600 text-white rounded-lg" @click="logout">
                         Logout
                     </button>
+
+                    <RouterLink to="/edit-profile" class="inline-block py-2 px-4 mx-3 bg-red-600 text-white rounded-lg">
+                        Edit Profile
+                    </RouterLink>
                 </div>
+                
             </div>
         </div>
 
@@ -71,6 +76,7 @@ import axios from 'axios'
 import FeedItem from '../components/FeedItem.vue'
 import {useUserStore} from '@/stores/user'
 import { useToastStore } from '@/stores/toast'
+import { RouterLink } from 'vue-router'
 
 export default (await import ('vue')).defineComponent({
     name: 'ProfileView',
@@ -86,10 +92,11 @@ export default (await import ('vue')).defineComponent({
 
 
     components: {
-        PeopleYouMayKnow,
-        Trends,
-        FeedItem,
-    },
+    PeopleYouMayKnow,
+    Trends,
+    FeedItem,
+    RouterLink
+},
 
     data(){
         return{
