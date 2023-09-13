@@ -50,6 +50,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default = timezone.now)
     last_login = models.DateTimeField(blank=True, null=True)
     
+    posts_count = models.IntegerField(default=0)
+    
     objects = CustomUserManager()
     
     USERNAME_FIELD = 'email'
