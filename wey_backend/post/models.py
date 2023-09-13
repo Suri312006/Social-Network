@@ -54,7 +54,7 @@ class Post(models.Model):
    
    
 class Trend(models.Model):
-       
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)   
     hashtag = models.CharField(max_length=255)
     occurrences = models.IntegerField()
        

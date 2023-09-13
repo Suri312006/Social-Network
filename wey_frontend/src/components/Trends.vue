@@ -5,14 +5,14 @@
             <div class="space-y-4">
                 <div class="flex items-center justify-between"
                     v-for="trend in trends"
-                    v-bind:key="trend.hashtag"
+                    v-bind:key="trend.id"
                 >
                     <p class="text-xs">
                         <strong>#{{ trend.hashtag }}</strong><br>
                         <span class="text-gray-500">{{ trend.occurrences }} posts</span>
                     </p>
     
-                    <a href="#" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Explore</a>
+                    <RouterLink :to="{name: 'trends', params: {'id': trend.hashtag}}" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Explore</RouterLink>
                 </div>
             </div>
     </div>

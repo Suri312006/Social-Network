@@ -15,8 +15,17 @@ def post_list(request):
 
     for user in request.user.friends.all():
         user_ids.append(user.id)
-
+    
     posts = Post.objects.filter(created_by_id__in=list(user_ids))
+        
+    all_posts = Post.objects.all()
+    
+    trend = request.GET.get('trend', '')
+    
+    if trend:
+        posts = all_posts.filter(body__icontains='#'+trend)
+
+    
     serializer = PostSerializer(posts, many=True)
 
     return JsonResponse(serializer.data, safe=False)

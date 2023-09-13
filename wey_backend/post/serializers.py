@@ -27,4 +27,4 @@ class PostDetailSerializer(ModelSerializer):
 class TrendSerializer(ModelSerializer):
     class Meta:
         model = Trend
-        fields = ('hashtag', 'occurrences')
+        fields = ('id', 'hashtag', 'occurrences')

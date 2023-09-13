@@ -38,6 +38,7 @@ for post in posts:
 for trend in Counter(trends).most_common(10):
     Trend.objects.create(hashtag=trend[0], occurrences=trend[1])
 
-
 for trend in Trend.objects.all():
     print(trend.hashtag)
+    
+    
