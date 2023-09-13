@@ -23,13 +23,16 @@
                 </div>
                 
                 <div v-if="userStore.user.id === user.id" class ="mt-6">
+
+                    <RouterLink to="/edit-profile" class="inline-block py-2 px-4 mr-2 bg-purple-600 text-white rounded-lg">
+                        Edit Profile
+                    </RouterLink>
+
                     <button class="inline-block py-2 px-4 bg-red-600 text-white rounded-lg" @click="logout">
                         Logout
                     </button>
 
-                    <RouterLink to="/edit-profile" class="inline-block py-2 px-4 mx-3 bg-red-600 text-white rounded-lg">
-                        Edit Profile
-                    </RouterLink>
+                    
                 </div>
                 
             </div>
