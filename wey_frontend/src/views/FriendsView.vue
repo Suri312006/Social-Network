@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
         <div class="main-left col-span-1">
             <div class="p-4 bg-white border border-gray-200 text-center rounded-lg">
-                <img src="https://i.pravatar.cc/300?img=70" class="mb-6 rounded-full">
+                <img :src="user.get_avatar" class="mb-6 rounded-full">
 
                 <p><strong>{{ user.name}}</strong></p>
 
@@ -23,7 +23,7 @@
                 v-for="friendshipRequest in friendshipRequests"
                 v-bind:key="friendshipRequest.created_by.id"
                  class="p-4 text-center bg-gray-100 rounded-lg">
-                    <img src="https://i.pravatar.cc/100?img=70" class="mx-auto rounded-full ">
+                    <img :src="friendshipRequest.created_by.get_avatar" class="mx-auto rounded-full ">
 
                     <p>
                         <strong>
@@ -58,7 +58,7 @@
                 v-for="friend in friends"
                 v-bind:key="friend.id"
                  class="p-4 text-center bg-gray-100 rounded-lg">
-                    <img src="https://i.pravatar.cc/100?img=70" class="mb-6 mx-auto rounded-full">
+                    <img :src="friend.get_avatar" class="mb-6 mx-auto rounded-full">
 
                     <p>
                         <strong>
