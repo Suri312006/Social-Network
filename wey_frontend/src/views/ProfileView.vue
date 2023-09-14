@@ -8,7 +8,7 @@
 
                 <div class="mt-6 flex space-x-8 justify-around" v-if="user.id">
                     <RouterLink :to="{name: 'friends', params: {id: user.id}}" class="text-xs text-gray-500">{{ user.friends_count }} friends</RouterLink>
-                    <p class="text-xs text-gray-500">{{user.posts_count}} posts</p>
+                    <p class="text-xs text-gray-500">{{posts.length}} posts</p>
                 </div>
 
                 <div class ="mt-6">
@@ -105,7 +105,8 @@ export default (await import ('vue')).defineComponent({
         return{
             posts: [],
             user: {
-                id: null
+                id: null,
+                get_avatar: null
             },
 
             body: '',
@@ -184,10 +185,13 @@ export default (await import ('vue')).defineComponent({
                     console.log('data', response.data)
                     this.posts.unshift(response.data)
                     this.body=''
+                    this.user.posts_count += 1
                 })
                 .catch(error => {
                     console.log('error', error)
                 })
+            
+                console.log(this.user.posts_count)
         },
 
         sendFriendshipRequest() {
