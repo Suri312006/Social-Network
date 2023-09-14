@@ -115,23 +115,20 @@ def handle_request(request, pk, status):
 @api_view(['POST'])
 def edit_profile(request):
     user = request.user
-    requested_email = request.data.get('email')
-    requested_name = request.data.get('name')
-    form = ProfileForm(request.data, instance=user)
-    
-    email_already_in_use: bool = User.objects.exclude(id = user.id).filter(email = requested_email)
-    
-    if email_already_in_use:
-        return JsonResponse({'message': 'Email already exists.'})
-    
+    email = request.data.get('email')
+
+    if User.objects.exclude(id=user.id).filter(email=email).exists():
+        return JsonResponse({'message': 'email already exists'})
     else:
+        print(request.FILES)
+        print(request.POST)
+
+        form = ProfileForm(request.POST, request.FILES, instance=user)
+
         if form.is_valid():
-            form = ProfileForm(request.data, instance=user)
             form.save()
-            
-            return JsonResponse({'message': 'success'})
-    
-    return JsonResponse({'message': 'Something Went Wrong.'})
+
+        return JsonResponse({'message': 'success'})
     
         
 

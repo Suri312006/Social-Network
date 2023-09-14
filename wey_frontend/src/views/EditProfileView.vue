@@ -29,8 +29,8 @@
                     </div>
 
                     <div>
-                        <label>E-mail</label><br>
-                        <input type="email" v-model="form.email" placeholder="Your e-mail address" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg">
+                        <label>Avatar</label><br>
+                        <input type="file" ref="file" >
                     </div>
 
 
@@ -72,7 +72,6 @@ export default{
             form: {
                 email: this.userStore.user.email,
                 name: this.userStore.user.name,
-                avatar: null
             },
             errors: [],
         }
@@ -92,8 +91,17 @@ export default{
 
 
             if (this.errors.length === 0) {
+                let formData= new FormData()
+                formData.append('avatar', this.$refs.file.files[0])
+                formData.append('name', this.form.name)
+                formData.append('email', this.form.email)
+                console.log(formData)
                 axios
-                    .post('/api/editprofile/', this.form)
+                    .post('/api/editprofile/', formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        }
+                    })
                     .then(response => {
                         if (response.data.message === 'success') {
                             this.toastStore.showToast(5000, 'The Information was Saved', 'bg-emerald-500')
