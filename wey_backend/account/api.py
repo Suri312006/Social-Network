@@ -2,7 +2,7 @@ from django.http import JsonResponse
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
-from .forms import SignupForm
+from .forms import SignupForm, ProfileForm
 
 from .models import FriendshipRequest, User
 
@@ -112,7 +112,30 @@ def handle_request(request, pk, status):
         return JsonResponse({'message': 'request rejected'})
         
         
+@api_view(['POST'])
+def edit_profile(request):
+    user = request.user
+    requested_email = request.data.get('email')
+    requested_name = request.data.get('name')
+    form = ProfileForm(request.data, instance=user)
+    
+    email_already_in_use: bool = User.objects.exclude(id = user.id).filter(email = requested_email)
+    
+    if email_already_in_use:
+        return JsonResponse({'message': 'Email already exists.'})
+    
+    else:
+        if form.is_valid():
+            form = ProfileForm(request.data, instance=user)
+            form.save()
+            
+            return JsonResponse({'message': 'success'})
+    
+    return JsonResponse({'message': 'Something Went Wrong.'})
+    
         
+
+    
         
     
     
